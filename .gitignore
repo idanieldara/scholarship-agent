@@ -1,0 +1,18 @@
+# secrets & local data (never commit your API key!)
+.env
+.streamlit/secrets.toml
+scholarships.db
+settings.json
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log

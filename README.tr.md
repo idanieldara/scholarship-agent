@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/banner.jpg" alt="Dara Burs Ajanı: Google Gemini ile çalışan yapay zekâ burs bulucu, Python ve Streamlit ile geliştirildi" width="860">
+<img src="assets/screenshots/banner.jpg" alt="Burs Ajanı: Google Gemini ile çalışan yapay zekâ burs bulucu, Python ve Streamlit ile geliştirildi" width="860">
 
 <br />
 
@@ -16,7 +16,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-[Özellikler](#features) · [Hızlı başlangıç](#quick-start) · [Kullanım](#usage) · [Çevrimiçi yayın](#deploy) · [Sorun giderme](#troubleshooting)
+[Özellikler](#features) · [Hızlı başlangıç](#quick-start) · [Kullanım](#usage) · [Çevrimiçi yayın](#deploy) · [Sorun giderme](#troubleshooting) · [Değişiklik günlüğü](CHANGELOG.md)
 
 🌐 [English](README.md) · [فارسی](README.fa.md) · **Türkçe**
 
@@ -31,6 +31,9 @@
 - [✨ Özellikler](#features)
 - [🧠 Nasıl çalışır?](#how-it-works)
 - [🚀 Hızlı başlangıç](#quick-start)
+  - [📦 Yöntem 1: Doğrudan indirme (Git'siz)](#install-direct)
+  - [🌿 Yöntem 2: Git ile](#install-git)
+  - [🖱️ Tek tıkla başlatıcı (run.bat / run.sh)](#launcher)
   - [🔑 Ücretsiz Gemini API anahtarı alma](#api-key)
   - [⚙️ Yapılandırma](#configuration)
 - [🧭 Kullanım](#usage)
@@ -41,6 +44,7 @@
 - [🛠️ Sorun giderme](#troubleshooting)
 - [⚠️ Sorumlu kullanım ve uyarı](#responsible-use)
 - [🗺️ Yol haritası](#roadmap)
+- [📋 Değişiklik günlüğü](#changelog)
 - [🤝 Katkıda bulunma](#contributing)
 - [📄 Lisans](#license)
 - [👤 Geliştirici ve destek](#author)
@@ -73,7 +77,7 @@ Yurt dışında **Lisans, Yüksek lisans, Doktora ve Doktora sonrası** bursu ar
 - 📚 **Hızlı site içe aktarma (yapay zekâsız, anahtarsız)**: Scholars4Dev, ScholarshipTab, ScholarshipSet ile Almanya, Birleşik Krallık, Kanada, ABD ve Avustralya ülke siteleri. Uyumlu herhangi bir kategori URL'sini ekleyebilirsiniz.
 - 🤖 **Yapay zekâ ile web araması**: Gemini + Google Search. *Hedef ülkeler* boşsa **tüm ülkelerde** aranır; derin arama modu her dünya bölgesi için bir tur çalıştırır.
 - ✨ **Yapay zekâ ile zenginleştirme**: Gemini her burs sayfasını okur (URL context) ve finansman, tutar, uygun uyruklar, alanlar ve dil şartlarını doldurur.
-- 🗣️ **Dört arayüz dili**: tam **RTL** desteği (Farsça ve Arapça) ve *Sans* yazı tipi. Özetler seçtiğiniz dilde yazılır ve seçiminiz sayfa yenilenince korunur.
+- 🗣️ **Dört arayüz dili**: tam **RTL** desteği (Farsça ve Arapça) ve *IRANSansX* yazı tipi. Özetler seçtiğiniz dilde yazılır ve seçiminiz sayfa yenilenince korunur.
 - 💾 **Yerel öncelikli**: sonuçlar yerel SQLite veritabanına kaydedilir. Filtreleme anlıktır ve API çağrısı gerektirmez.
 - ⬇️ Excel ve Google Sheets için **CSV dışa aktarma**.
 - 🛡️ **Güvenilir tasarım**: aşırı yüklenen modeller için otomatik yeniden deneme (503), kota hatalarında (429) hızlı geçiş ve yapılandırılabilir yedek model.
@@ -97,30 +101,72 @@ flowchart LR
 
 ## 🚀 Hızlı başlangıç
 
-**Gereksinimler:** Python 3.10 veya üzeri ve ücretsiz bir Gemini API anahtarı (yalnızca yapay zekâ özellikleri için).
+**Gereksinimler:** Python 3.10 veya üzeri ([python.org](https://www.python.org/downloads/); Windows'ta kurulumda **Add Python to PATH** seçeneğini işaretleyin) ve ücretsiz bir Gemini API anahtarı (yalnızca yapay zekâ özellikleri için). İki kurulum yönteminden birini seçin:
+
+<a id="install-direct"></a>
+
+### 📦 Yöntem 1: Doğrudan indirme (Git gerekmez)
+
+1. GitHub'da depo sayfasını açın, yeşil **Code** düğmesine ve ardından **Download ZIP**'e tıklayın.
+2. ZIP dosyasını istediğiniz yere çıkarın (örneğin `Belgeler/scholarship-agent`).
+3. Uygulamayı başlatın:
+   - **Windows:** **`run.bat`** dosyasına çift tıklayın.
+   - **macOS / Linux:** klasörde bir terminal açıp `bash run.sh` komutunu çalıştırın.
+
+   İlk çalıştırmada sanal ortam oluşturulur, bağımlılıklar yüklenir, `.env` dosyanız oluşturulur ve uygulama **http://localhost:8501** adresinde açılır. Sonraki açılışlar birkaç saniye sürer.
+4. Gemini API anahtarınızı uygulamada (kenar çubuğundaki **Ayarlar**) veya `.env` dosyasında girin.
+
+> Daha sonra güncellemek için yeni ZIP'i indirip dosyalarını eski klasörün üzerine kopyalayın. `.env` ve `scholarships.db` dosyalarınızı koruyun.
+
+<a id="install-git"></a>
+
+### 🌿 Yöntem 2: Git ile (güncellemeler ve katkıda bulunanlar için ideal)
 
 ```bash
-# 1. kodu indirin
 git clone https://github.com/idanieldara/scholarship-agent.git
-cd dara-scholarship-agent
+cd scholarship-agent
+```
 
-# 2. sanal ortam oluşturun
+Ardından `run.bat` (Windows) veya `bash run.sh` (macOS / Linux) ile başlatın ya da elle çalıştırın:
+
+```bash
 python -m venv venv
-venv\Scripts\activate            # Windows
-# source venv/bin/activate       # macOS / Linux
-
-# 3. bağımlılıkları yükleyin
+venv\Scripts\activate            # Windows  |  macOS / Linux: source venv/bin/activate
 pip install -r requirements.txt
-
-# 4. API anahtarınızı ekleyin
-copy .env.example .env           # Windows
-# cp .env.example .env           # macOS / Linux
-
-# 5. çalıştırın
+copy .env.example .env           # Windows  |  macOS / Linux: cp .env.example .env
 streamlit run app.py
 ```
 
-Uygulama **http://localhost:8501** adresinde açılır. Proje klasöründen çalıştırın.
+İstediğiniz zaman `git pull` ile güncelleyin. Başlatma betikleri değişen bağımlılıkları otomatik yükler; elle başlatıyorsanız `pip install -r requirements.txt` komutunu tekrar çalıştırın.
+
+> **Streamlit ilk çalıştırmada e-posta mı istiyor?** Sadece **Enter**'a basın. `run.bat` ve `run.sh` bu soruyu otomatik atlar. Uygulamayı her zaman proje klasöründen çalıştırın.
+
+<a id="launcher"></a>
+
+### 🖱️ Tek tıkla başlatıcıyı kullanma (`run.bat` / `run.sh`)
+
+`run.bat` (Windows) ve `run.sh` (macOS / Linux), hiçbir komut yazmadan uygulamayı başlatır. Her açılışta şunları yapar:
+
+1. `venv` sanal ortamı yoksa oluşturur (yalnızca ilk çalıştırmada),
+2. tüm bağımlılıkların yüklü ve güncel olduğunu kontrol eder,
+3. `.env` yoksa `.env.example` dosyasından oluşturur,
+4. Streamlit'in ilk çalıştırmadaki e-posta sorusunu atlar,
+5. `streamlit run app.py` komutunu çalıştırır ve uygulama **http://localhost:8501** adresinde açılır.
+
+**Windows'ta**
+
+1. Python 3.10 veya üzerinin kurulu olduğundan emin olun (kurulumda **Add Python to PATH** seçeneğini işaretleyin).
+2. Proje klasörünü açın ve **`run.bat` dosyasına çift tıklayın**.
+3. Siyah bir Komut İstemi penceresi açılır. İlk açılış paketler yüklenirken birkaç dakika sürer; sonrakiler birkaç saniye.
+4. Uygulama hazır olunca tarayıcınız açılır. Açılmazsa **http://localhost:8501** adresini kendiniz açın.
+
+**macOS / Linux'ta:** proje klasöründe bir terminal açıp `bash run.sh` komutunu çalıştırın.
+
+> **Bilmekte fayda var**
+> - Uygulamayı kullanırken siyah pencereyi açık tutun. Kapatmak (veya `Ctrl + C`) uygulamayı durdurur.
+> - *Python 3.10+ is required* mesajını görürseniz Python kurulu değil veya PATH'te değil. Yeniden kurup **Add Python to PATH** seçeneğini işaretleyin.
+> - Gemini API anahtarınızı uygulamada (kenar çubuğundaki **Ayarlar**) veya `.env` dosyasında (`GEMINI_API_KEY=...`) girin.
+> - Terminali mi tercih ediyorsunuz? Yöntem 2'deki elle komutlar aynı şekilde çalışır.
 
 <a id="api-key"></a>
 
@@ -177,6 +223,7 @@ Uygulama **http://localhost:8501** adresinde açılır. Proje klasöründen çal
 
 ```text
 dara-scholarship-agent/
+├── run.bat / run.sh    # tek tıkla başlatıcı (Windows / macOS-Linux)
 ├── app.py              # Streamlit arayüzü, filtreler, dil ve RTL yönetimi
 ├── agent.py            # Gemini ajanı: web araması, zenginleştirme, yeniden deneme ve yedek model
 ├── sources.py          # Site tarayıcıları (yapay zekâsız) ve tarih/düzey ayrıştırma
@@ -185,10 +232,11 @@ dara-scholarship-agent/
 ├── countries.py        # ülke adı -> simge yapı görseli (SVG veya kendi fotoğrafınız)
 ├── assets/countries/   # simge yapı illüstrasyonları (de.svg, fr.svg, ...) + isteğe bağlı fotoğraflar
 ├── tools/make_country_art.py  # SVG illüstrasyonlarını yeniden üretir
-├── static/             # Farsça ve Arapça için Sans yazı tipleri
-├── assets/screenshots/   # README görselleri
+├── static/             # Farsça ve Arapça için IRANSansX yazı tipleri
+├── docs/screenshots/   # README görselleri
 ├── requirements.txt
 ├── .env.example
+├── CHANGELOG.md        # sürüm geçmişi
 └── LICENSE
 ```
 
@@ -236,7 +284,7 @@ GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı 
 
 - Burs bilgileri eksik veya güncel olmayabilir ve yapay zekâ hata yapabilir. **Son tarihleri, uygunluğu ve şartları her zaman resmî sayfada doğrulayın.**
 - Tarayıcılar hafif ve kişisel kullanım içindir. Her sitenin kullanım koşullarına ve `robots.txt` dosyasına saygı gösterin, sayfa sınırlarını makul tutun.
-- `static/` içindeki yazı tipi dosyaları *Sans*'tir; bir fork'u yeniden dağıtmadan önce lisansını kontrol edin. Dosyalar yoksa uygulama Tahoma'ya döner.
+- `static/` içindeki yazı tipi dosyaları *IRANSansX*'tir; bir fork'u yeniden dağıtmadan önce lisansını kontrol edin. Dosyalar yoksa uygulama Tahoma'ya döner.
 
 <a id="roadmap"></a>
 
@@ -246,6 +294,13 @@ GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı 
 - [ ] E-posta / WhatsApp / Telegram ile son tarih hatırlatmaları
 - [ ] Kayıtlı aramalar ve favoriler
 - [ ] Docker imajı ve tek tıkla yayın
+
+<a id="changelog"></a>
+
+## 📋 Değişiklik günlüğü
+
+Tüm önemli değişiklikler [CHANGELOG.md](CHANGELOG.md) dosyasında belgelenmiştir.
+Son sürüm **v0.5.0**: tek tıkla başlatıcılar (`run.bat` / `run.sh`) ve iki kurulum yöntemi.
 
 <a id="contributing"></a>
 

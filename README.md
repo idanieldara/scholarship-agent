@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/banner.jpg" alt="Dara Scholarship Agent: AI scholarship finder powered by Google Gemini, built with Python and Streamlit" width="860">
+<img src="assets/screenshots/banner.jpg" alt="Scholarship Agent: AI scholarship finder powered by Google Gemini, built with Python and Streamlit" width="860">
 
 <br />
 
@@ -16,7 +16,7 @@ Powered by **Google Gemini** · Built with **Python & Streamlit** · UI in **Eng
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-[Features](#features) · [Quick start](#quick-start) · [Usage](#usage) · [Deploy online](#deploy) · [Troubleshooting](#troubleshooting)
+[Features](#features) · [Quick start](#quick-start) · [Usage](#usage) · [Deploy online](#deploy) · [Troubleshooting](#troubleshooting) · [Changelog](CHANGELOG.md)
 
 🌐 **English** · [فارسی](README.fa.md) · [Türkçe](README.tr.md)
 
@@ -31,6 +31,9 @@ Powered by **Google Gemini** · Built with **Python & Streamlit** · UI in **Eng
 - [✨ Features](#features)
 - [🧠 How it works](#how-it-works)
 - [🚀 Quick start](#quick-start)
+  - [📦 Method 1: Direct download (no Git)](#install-direct)
+  - [🌿 Method 2: With Git](#install-git)
+  - [🖱️ One-click launcher (run.bat / run.sh)](#launcher)
   - [🔑 Get a free Gemini API key](#api-key)
   - [⚙️ Configuration](#configuration)
 - [🧭 Usage](#usage)
@@ -41,6 +44,7 @@ Powered by **Google Gemini** · Built with **Python & Streamlit** · UI in **Eng
 - [🛠️ Troubleshooting](#troubleshooting)
 - [⚠️ Responsible use & disclaimer](#responsible-use)
 - [🗺️ Roadmap](#roadmap)
+- [📋 Changelog](#changelog)
 - [🤝 Contributing](#contributing)
 - [📄 License](#license)
 - [👤 Author & support](#author)
@@ -73,7 +77,7 @@ It is built for students applying for **Bachelor, Master, PhD and Postdoc** scho
 - 📚 **Fast website import (no AI, no key)**: Scholars4Dev, ScholarshipTab, ScholarshipSet, and country sites for Germany, the UK, Canada, the USA and Australia. Paste any compatible category URL to add more.
 - 🤖 **AI web search**: Gemini + Google Search grounding. Leave *Destination countries* empty to search **all countries**; a deep-search mode runs one pass per world region.
 - ✨ **AI enrichment**: Gemini reads each scholarship page (URL context) and fills funding, amount, eligible nationalities, fields and language requirements.
-- 🗣️ **Four interface languages** with full **RTL support** (Persian and Arabic) and the *Sans* font. Summaries are written in your chosen language, and your choice survives a page refresh.
+- 🗣️ **Four interface languages** with full **RTL support** (Persian and Arabic) and the *IRANSansX* font. Summaries are written in your chosen language, and your choice survives a page refresh.
 - 💾 **Local-first**: results are saved in a local SQLite database. Filtering is instant and costs no API calls.
 - ⬇️ **Export to CSV** for Excel and Google Sheets.
 - 🛡️ **Reliable by design**: automatic retries for overloaded models (503), fast fallback on quota errors (429), and a configurable fallback model.
@@ -84,7 +88,7 @@ It is built for students applying for **Bachelor, Master, PhD and Postdoc** scho
 
 | English | فارسی (RTL) |
 |---|---|
-| ![Dashboard in English](assets/screenshots/app-en.png) | ![Persian RTL dashboard](assets/screenshots/app-fa.png) |
+| ![Dashboard in English](docs/screenshots/app-en.png) | ![Persian RTL dashboard](docs/screenshots/app-fa.png) |
 -->
 
 <a id="how-it-works"></a>
@@ -105,30 +109,72 @@ flowchart LR
 
 ## 🚀 Quick start
 
-**Requirements:** Python 3.10 or newer and a free Gemini API key (only needed for AI features).
+**Requirements:** Python 3.10 or newer ([python.org](https://www.python.org/downloads/); on Windows tick **Add Python to PATH** during setup) and a free Gemini API key (only needed for AI features). Pick one of the two installation methods:
+
+<a id="install-direct"></a>
+
+### 📦 Method 1: Direct download (no Git needed)
+
+1. Open the repository page on GitHub, click the green **Code** button, then **Download ZIP**.
+2. Extract the ZIP anywhere (for example `Documents/scholarship-agent`).
+3. Start the app:
+   - **Windows:** double-click **`run.bat`**.
+   - **macOS / Linux:** open a terminal in the folder and run `bash run.sh`.
+
+   The first launch creates a virtual environment, installs the dependencies, creates your `.env` file and opens the app at **http://localhost:8501**. Later launches take a few seconds.
+4. Add your Gemini API key in the app (**Settings** in the sidebar) or in `.env`.
+
+> To update later, download the new ZIP and copy its files over the old folder. Keep your `.env` and `scholarships.db`.
+
+<a id="install-git"></a>
+
+### 🌿 Method 2: With Git (best for updates and contributors)
 
 ```bash
-# 1. get the code
 git clone https://github.com/idanieldara/scholarship-agent.git
-cd dara-scholarship-agent
+cd scholarship-agent
+```
 
-# 2. create a virtual environment
+Then start it with `run.bat` (Windows) or `bash run.sh` (macOS / Linux), or manually:
+
+```bash
 python -m venv venv
-venv\Scripts\activate            # Windows
-# source venv/bin/activate       # macOS / Linux
-
-# 3. install dependencies
+venv\Scripts\activate            # Windows  |  macOS / Linux: source venv/bin/activate
 pip install -r requirements.txt
-
-# 4. add your API key
-copy .env.example .env           # Windows
-# cp .env.example .env           # macOS / Linux
-
-# 5. run
+copy .env.example .env           # Windows  |  macOS / Linux: cp .env.example .env
 streamlit run app.py
 ```
 
-The app opens at **http://localhost:8501**. Run it from the project folder.
+Update any time with `git pull`. The launch scripts reinstall changed dependencies automatically; when starting manually, run `pip install -r requirements.txt` again.
+
+> **Streamlit asks for an email on the first run?** Just press **Enter**. `run.bat` and `run.sh` skip this prompt automatically. Always run the app from the project folder.
+
+<a id="launcher"></a>
+
+### 🖱️ Using the one-click launcher (`run.bat` / `run.sh`)
+
+`run.bat` (Windows) and `run.sh` (macOS / Linux) start the app without typing any commands. On every launch they:
+
+1. create the virtual environment `venv` if it does not exist (first run only),
+2. check that all dependencies are installed and up to date,
+3. create `.env` from `.env.example` if it is missing,
+4. skip Streamlit's first-run email prompt,
+5. run `streamlit run app.py`, which opens the app at **http://localhost:8501**.
+
+**On Windows**
+
+1. Make sure Python 3.10 or newer is installed (tick **Add Python to PATH** during setup).
+2. Open the project folder and **double-click `run.bat`**.
+3. A black Command Prompt window opens. The first launch takes a few minutes while packages install; later launches take a few seconds.
+4. When the app is ready your browser opens. If it does not, open **http://localhost:8501** yourself.
+
+**On macOS / Linux:** open a terminal in the project folder and run `bash run.sh`.
+
+> **Good to know**
+> - Keep the black window open while you use the app. Closing it (or pressing `Ctrl + C`) stops the app.
+> - If you see *Python 3.10+ is required*, Python is missing or not on your PATH. Reinstall it and tick **Add Python to PATH**.
+> - Add your Gemini API key in the app (**Settings** in the sidebar) or in `.env` (`GEMINI_API_KEY=...`).
+> - Prefer the terminal? The manual commands in Method 2 work exactly the same.
 
 <a id="api-key"></a>
 
@@ -185,6 +231,7 @@ The app opens at **http://localhost:8501**. Run it from the project folder.
 
 ```text
 dara-scholarship-agent/
+├── run.bat / run.sh    # one-click launcher (Windows / macOS-Linux)
 ├── app.py              # Streamlit UI, filters, language and RTL handling
 ├── agent.py            # Gemini agent: web search, enrichment, retries and fallback
 ├── sources.py          # Website crawlers (no AI) and date/level parsing
@@ -193,10 +240,11 @@ dara-scholarship-agent/
 ├── countries.py        # country name -> landmark thumbnail (SVG or your own photo)
 ├── assets/countries/   # landmark illustrations (de.svg, fr.svg, ...) + optional photos
 ├── tools/make_country_art.py  # regenerates the SVG illustrations
-├── static/             # Sans fonts used for Persian and Arabic
-├── assets/screenshots/   # README images
+├── static/             # IRANSansX fonts used for Persian and Arabic
+├── docs/screenshots/   # README images
 ├── requirements.txt
 ├── .env.example
+├── CHANGELOG.md        # version history
 └── LICENSE
 ```
 
@@ -244,7 +292,7 @@ GitHub stores your code; it does not run Streamlit apps. To make the app availab
 
 - Scholarship information can be incomplete or outdated, and AI can make mistakes. **Always verify deadlines, eligibility and requirements on the official page.**
 - The crawlers are intended for light, personal use. Respect each website's terms of service and `robots.txt`, and keep the page limits modest.
-- The font files in `static/` are *Sans*; check its license before redistributing a fork. If the files are missing the app falls back to Tahoma.
+- The font files in `static/` are *IRANSansX*; check its license before redistributing a fork. If the files are missing the app falls back to Tahoma.
 
 <a id="roadmap"></a>
 
@@ -254,7 +302,12 @@ GitHub stores your code; it does not run Streamlit apps. To make the app availab
 - [ ] Deadline reminders by email / WhatsApp / Telegram
 - [ ] Saved searches and favorites
 - [ ] Docker image and one-click deploy
+<a id="changelog"></a>
 
+## 📋 Changelog
+
+All notable changes are documented in [CHANGELOG.md](CHANGELOG.md).
+The latest release is **v0.5.0**: one-click launchers (`run.bat` / `run.sh`) and two installation methods.
 <a id="contributing"></a>
 
 ## 🤝 Contributing
@@ -283,4 +336,3 @@ If this project helps you, please give it a ⭐ on GitHub.
 scholarship finder · scholarship search engine · fully funded scholarships · study abroad · master's scholarships · PhD scholarships · AI agent · Google Gemini API · Streamlit app · Python web scraper · RTL Persian Arabic Turkish UI
 
 </details>
-"# scholarship-agent" 

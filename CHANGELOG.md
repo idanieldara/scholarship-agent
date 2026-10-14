@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.3] - 2026-10-14
+
+### Fixed
+- Running a launcher outside the project folder (for example from inside the ZIP without extracting, or after moving the file) ended with pip's "Could not open requirements file" and then "'streamlit' is not recognized". `Run (Windows).bat` and `Run (Mac).sh` now check that `app.py` and `requirements.txt` are next to them and stop with a clear explanation if not.
+
+### Changed
+- README troubleshooting (English, Persian, Turkish) covers this error.
+
+## [0.5.2] - 2026-10-13
+
+### Changed
+- Launcher scripts renamed to be self-explanatory: `run.bat` is now **`Run (Windows).bat`** and `run.sh` is now **`Run (Mac).sh`** (it also works on Linux). Start the macOS / Linux launcher with `bash "Run (Mac).sh"`; the quotes are required because the name contains spaces and parentheses.
+- README (English, Persian, Turkish) updated with the new file names.
+
+## [0.5.1] - 2026-10-13
+
+### Fixed
+- Installation failed on very new Python versions (for example 3.15). Dependencies such as `pyarrow` and `pyyaml` have no pre-built packages for them yet, so pip tried to compile them and stopped with "Microsoft Visual C++ 14.0 or greater is required". `run.bat` and `run.sh` now pick a supported Python (3.10 – 3.14, preferring 3.12 / 3.13) automatically, even when a newer one is installed.
+- A virtual environment created with an unsupported Python is detected and recreated.
+- The launchers now stop with a clear message when installing the dependencies fails, instead of continuing and ending with "'streamlit' is not recognized".
+
+### Changed
+- README documents the supported Python range (3.10 – 3.14, 3.12 / 3.13 recommended) and has new troubleshooting entries for compiler and "Failed building wheel" errors.
+
 ## [0.5.0] - 2026-10-12
 
 ### Added
@@ -103,11 +127,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Filters for country, field of study, funding type, deadline and a selectable nationality (not limited to one country).
 - Local SQLite storage, CSV export and a local-first setup that runs on your own computer.
 
-[Unreleased]: https://github.com/idanieldara/scholarship-agent/compare/v0.5.0...HEAD
-[0.5.0]: https://github.com/idanieldara/scholarship-agent/compare/v0.4.1...v0.5.0
-[0.4.1]: https://github.com/idanieldara/scholarship-agent/compare/v0.4.0...v0.4.1
-[0.4.0]: https://github.com/idanieldara/scholarship-agent/compare/v0.3.1...v0.4.0
-[0.3.1]: https://github.com/idanieldara/scholarship-agent/compare/v0.3.0...v0.3.1
-[0.3.0]: https://github.com/idanieldara/scholarship-agent/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/idanieldara/scholarship-agent/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/idanieldara/scholarship-agent/releases/tag/v0.1.0
+[Unreleased]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.3...HEAD
+[0.5.3]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.4.1...v0.5.0
+[0.4.1]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.3.1...v0.4.0
+[0.3.1]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/releases/tag/v0.1.0

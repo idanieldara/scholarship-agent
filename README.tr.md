@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/banner.jpg" alt="Burs Ajanı: Google Gemini ile çalışan yapay zekâ burs bulucu, Python ve Streamlit ile geliştirildi" width="860">
+<img src="assets/screenshots/banner.jpg" alt="Dara Burs Ajanı: Google Gemini ile çalışan yapay zekâ burs bulucu, Python ve Streamlit ile geliştirildi" width="860">
 
 <br />
 
@@ -33,7 +33,7 @@
 - [🚀 Hızlı başlangıç](#quick-start)
   - [📦 Yöntem 1: Doğrudan indirme (Git'siz)](#install-direct)
   - [🌿 Yöntem 2: Git ile](#install-git)
-  - [🖱️ Tek tıkla başlatıcı (run.bat / run.sh)](#launcher)
+  - [🖱️ Tek tıkla başlatıcı: Run (Windows) / Run (Mac)](#launcher)
   - [🔑 Ücretsiz Gemini API anahtarı alma](#api-key)
   - [⚙️ Yapılandırma](#configuration)
 - [🧭 Kullanım](#usage)
@@ -101,17 +101,17 @@ flowchart LR
 
 ## 🚀 Hızlı başlangıç
 
-**Gereksinimler:** Python 3.10 veya üzeri ([python.org](https://www.python.org/downloads/); Windows'ta kurulumda **Add Python to PATH** seçeneğini işaretleyin) ve ücretsiz bir Gemini API anahtarı (yalnızca yapay zekâ özellikleri için). İki kurulum yönteminden birini seçin:
+**Gereksinimler:** Python 3.10 – 3.14 (3.12 veya 3.13 önerilir) ([python.org](https://www.python.org/downloads/); Windows'ta kurulumda **Add Python to PATH** seçeneğini işaretleyin) ve ücretsiz bir Gemini API anahtarı (yalnızca yapay zekâ özellikleri için). 3.15 gibi çok yeni sürümler henüz desteklenmiyor (bazı bağımlılıkların bu sürümler için hazır paketi yok). İki kurulum yönteminden birini seçin:
 
 <a id="install-direct"></a>
 
 ### 📦 Yöntem 1: Doğrudan indirme (Git gerekmez)
 
 1. GitHub'da depo sayfasını açın, yeşil **Code** düğmesine ve ardından **Download ZIP**'e tıklayın.
-2. ZIP dosyasını istediğiniz yere çıkarın (örneğin `Belgeler/scholarship-agent`).
+2. ZIP dosyasını istediğiniz yere çıkarın (örneğin `Belgeler/dara-scholarship-agent`).
 3. Uygulamayı başlatın:
-   - **Windows:** **`run.bat`** dosyasına çift tıklayın.
-   - **macOS / Linux:** klasörde bir terminal açıp `bash run.sh` komutunu çalıştırın.
+   - **Windows:** **`Run (Windows).bat`** dosyasına çift tıklayın.
+   - **macOS / Linux:** klasörde bir terminal açıp `bash "Run (Mac).sh"` komutunu çalıştırın.
 
    İlk çalıştırmada sanal ortam oluşturulur, bağımlılıklar yüklenir, `.env` dosyanız oluşturulur ve uygulama **http://localhost:8501** adresinde açılır. Sonraki açılışlar birkaç saniye sürer.
 4. Gemini API anahtarınızı uygulamada (kenar çubuğundaki **Ayarlar**) veya `.env` dosyasında girin.
@@ -123,11 +123,11 @@ flowchart LR
 ### 🌿 Yöntem 2: Git ile (güncellemeler ve katkıda bulunanlar için ideal)
 
 ```bash
-git clone https://github.com/idanieldara/scholarship-agent.git
-cd scholarship-agent
+git clone https://github.com/idanieldara/dara-scholarship-agent.git
+cd dara-scholarship-agent
 ```
 
-Ardından `run.bat` (Windows) veya `bash run.sh` (macOS / Linux) ile başlatın ya da elle çalıştırın:
+Ardından `Run (Windows).bat` (Windows) veya `bash "Run (Mac).sh"` (macOS / Linux) ile başlatın ya da elle çalıştırın:
 
 ```bash
 python -m venv venv
@@ -139,13 +139,13 @@ streamlit run app.py
 
 İstediğiniz zaman `git pull` ile güncelleyin. Başlatma betikleri değişen bağımlılıkları otomatik yükler; elle başlatıyorsanız `pip install -r requirements.txt` komutunu tekrar çalıştırın.
 
-> **Streamlit ilk çalıştırmada e-posta mı istiyor?** Sadece **Enter**'a basın. `run.bat` ve `run.sh` bu soruyu otomatik atlar. Uygulamayı her zaman proje klasöründen çalıştırın.
+> **Streamlit ilk çalıştırmada e-posta mı istiyor?** Sadece **Enter**'a basın. `Run (Windows).bat` ve `Run (Mac).sh` bu soruyu otomatik atlar. Uygulamayı her zaman proje klasöründen çalıştırın.
 
 <a id="launcher"></a>
 
-### 🖱️ Tek tıkla başlatıcıyı kullanma (`run.bat` / `run.sh`)
+### 🖱️ Tek tıkla başlatıcıyı kullanma (`Run (Windows).bat` / `Run (Mac).sh`)
 
-`run.bat` (Windows) ve `run.sh` (macOS / Linux), hiçbir komut yazmadan uygulamayı başlatır. Her açılışta şunları yapar:
+`Run (Windows).bat` (Windows) ve `Run (Mac).sh` (macOS / Linux), hiçbir komut yazmadan uygulamayı başlatır. Her açılışta şunları yapar:
 
 1. `venv` sanal ortamı yoksa oluşturur (yalnızca ilk çalıştırmada),
 2. tüm bağımlılıkların yüklü ve güncel olduğunu kontrol eder,
@@ -155,16 +155,16 @@ streamlit run app.py
 
 **Windows'ta**
 
-1. Python 3.10 veya üzerinin kurulu olduğundan emin olun (kurulumda **Add Python to PATH** seçeneğini işaretleyin).
-2. Proje klasörünü açın ve **`run.bat` dosyasına çift tıklayın**.
+1. Python 3.10 – 3.14 (3.12 veya 3.13 önerilir)nin kurulu olduğundan emin olun (kurulumda **Add Python to PATH** seçeneğini işaretleyin).
+2. Proje klasörünü açın ve **`Run (Windows).bat` dosyasına çift tıklayın**.
 3. Siyah bir Komut İstemi penceresi açılır. İlk açılış paketler yüklenirken birkaç dakika sürer; sonrakiler birkaç saniye.
 4. Uygulama hazır olunca tarayıcınız açılır. Açılmazsa **http://localhost:8501** adresini kendiniz açın.
 
-**macOS / Linux'ta:** proje klasöründe bir terminal açıp `bash run.sh` komutunu çalıştırın.
+**macOS / Linux'ta:** proje klasöründe bir terminal açıp `bash "Run (Mac).sh"` komutunu çalıştırın.
 
 > **Bilmekte fayda var**
 > - Uygulamayı kullanırken siyah pencereyi açık tutun. Kapatmak (veya `Ctrl + C`) uygulamayı durdurur.
-> - *Python 3.10+ is required* mesajını görürseniz Python kurulu değil veya PATH'te değil. Yeniden kurup **Add Python to PATH** seçeneğini işaretleyin.
+> - *No supported Python found* mesajını görürseniz Python 3.12 veya 3.13 kurup **Add Python to PATH** seçeneğini işaretleyin.
 > - Gemini API anahtarınızı uygulamada (kenar çubuğundaki **Ayarlar**) veya `.env` dosyasında (`GEMINI_API_KEY=...`) girin.
 > - Terminali mi tercih ediyorsunuz? Yöntem 2'deki elle komutlar aynı şekilde çalışır.
 
@@ -223,7 +223,7 @@ streamlit run app.py
 
 ```text
 dara-scholarship-agent/
-├── run.bat / run.sh    # tek tıkla başlatıcı (Windows / macOS-Linux)
+├── Run (Windows).bat / Run (Mac).sh    # tek tıkla başlatıcı (Windows / macOS-Linux)
 ├── app.py              # Streamlit arayüzü, filtreler, dil ve RTL yönetimi
 ├── agent.py            # Gemini ajanı: web araması, zenginleştirme, yeniden deneme ve yedek model
 ├── sources.py          # Site tarayıcıları (yapay zekâsız) ve tarih/düzey ayrıştırma
@@ -262,7 +262,7 @@ Desteklenen biçimler: `.jpg`, `.png`, `.webp` (fotoğraf her zaman `.svg` dosya
 
 GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı çevrimiçi sunmak için:
 
-- **Streamlit Community Cloud (ücretsiz):** depoyu GitHub'a gönderin, <share.streamlit.io> adresini açın, **Create app**'e tıklayın, depoyu, `main` dalını ve `app.py` dosyasını seçip **Deploy** edin.
+- **Streamlit Community Cloud (ücretsiz):** depoyu GitHub'a gönderin, <https://share.streamlit.io> adresini açın, **Create app**'e tıklayın, depoyu, `main` dalını ve `app.py` dosyasını seçip **Deploy** edin.
   Herkese açık bir uygulamada kendi API anahtarınızı *Secrets* içine **koymayın** (herkes kotanızı harcayabilir); boş bırakın ki her ziyaretçi kendi anahtarını kenar çubuğuna girsin. Uygulama yeniden başlayınca kayıtlı sonuçlar sıfırlanır.
 - **Kendi sunucunuz (VPS):** `pip install -r requirements.txt`, ardından Nginx/Caddy arkasında HTTPS ile `streamlit run app.py --server.port 8501 --server.address 0.0.0.0` çalıştırın.
 
@@ -275,6 +275,9 @@ GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı 
 | `429` / `RESOURCE_EXHAUSTED` | Kota veya hız sınırı doldu. Uygulama yedek modele geçer; turları azaltın (*Derin arama*'yı kapatın), bir dakika bekleyin veya faturalandırmayı etkinleştirin. |
 | `503 UNAVAILABLE` | Model aşırı yüklü. Uygulama otomatik yeniden dener (3, 6, 12, 24 sn) ve ardından yedek modeli kullanır. |
 | Bir site için `403 Forbidden` | O site otomatik erişimi engelliyor. Başka bir kaynak veya yapay zekâ arama sekmesini kullanın. |
+| `ERROR: Could not open requirements file ... 'requirements.txt'` | Başlatıcı proje dosyalarının yanında değil (örneğin ZIP'in içinden çalıştırıldı veya klasörden çıkarıldı). ZIP'in **tamamını** çıkarın (sağ tık, *Tümünü ayıkla*) ve başlatıcıyı çıkarılan proje klasörünün içinden çalıştırın. Deponuzda `requirements.txt` dosyasının olduğunu da kontrol edin. Yeni başlatıcı bunu açık bir mesajla gösterir. |
+| `Microsoft Visual C++ 14.0 or greater is required` / `Failed building wheel` (pyarrow, pyyaml) | Python sürümünüz çok yeni (örneğin 3.15) ve bazı paketlerin hazır sürümü yok. Python 3.12 veya 3.13 kurun, `venv` klasörünü silin ve `Run (Windows).bat` dosyasını yeniden çalıştırın; başlatıcı desteklenen bir Python'u otomatik seçer. |
+| `'streamlit' is not recognized` | Bağımlılıklar yüklenemedi. Üstteki hatayı (yukarıdaki satırlara bakın) giderin, sonra başlatıcıyı yeniden çalıştırın. |
 | Farsça yazı tipi uygulanmıyor | `static/Sans-Regular.woff2` ve `static/Sans-Bold.woff2` dosyalarını `app.py` ile aynı yerde tutun ve uygulamayı yeniden başlatın. |
 | Yapay zekâ az sonuç veriyor | Gemini bir tarayıcı değildir. Hacim için site içe aktarmayı, keşif için yapay zekâ aramasını kullanın. |
 
@@ -300,7 +303,7 @@ GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı 
 ## 📋 Değişiklik günlüğü
 
 Tüm önemli değişiklikler [CHANGELOG.md](CHANGELOG.md) dosyasında belgelenmiştir.
-Son sürüm **v0.5.0**: tek tıkla başlatıcılar (`run.bat` / `run.sh`) ve iki kurulum yöntemi.
+Son sürüm **v0.5.3**: başlatıcılar proje klasörünün dışında çalıştırılınca artık açık bir mesaj veriyor.
 
 <a id="contributing"></a>
 

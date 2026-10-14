@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/banner.jpg" alt="Scholarship Agent: AI scholarship finder powered by Google Gemini, built with Python and Streamlit" width="860">
+<img src="assets/screenshots/banner.jpg" alt="Dara Scholarship Agent: AI scholarship finder powered by Google Gemini, built with Python and Streamlit" width="860">
 
 <br />
 
@@ -33,7 +33,7 @@ Powered by **Google Gemini** · Built with **Python & Streamlit** · UI in **Eng
 - [🚀 Quick start](#quick-start)
   - [📦 Method 1: Direct download (no Git)](#install-direct)
   - [🌿 Method 2: With Git](#install-git)
-  - [🖱️ One-click launcher (run.bat / run.sh)](#launcher)
+  - [🖱️ One-click launcher: Run (Windows) / Run (Mac)](#launcher)
   - [🔑 Get a free Gemini API key](#api-key)
   - [⚙️ Configuration](#configuration)
 - [🧭 Usage](#usage)
@@ -109,17 +109,17 @@ flowchart LR
 
 ## 🚀 Quick start
 
-**Requirements:** Python 3.10 or newer ([python.org](https://www.python.org/downloads/); on Windows tick **Add Python to PATH** during setup) and a free Gemini API key (only needed for AI features). Pick one of the two installation methods:
+**Requirements:** Python 3.10 to 3.14 (3.12 or 3.13 recommended) ([python.org](https://www.python.org/downloads/); on Windows tick **Add Python to PATH** during setup) and a free Gemini API key (only needed for AI features). Very new versions such as 3.15 are not supported yet (some dependencies have no pre-built packages for them). Pick one of the two installation methods:
 
 <a id="install-direct"></a>
 
 ### 📦 Method 1: Direct download (no Git needed)
 
 1. Open the repository page on GitHub, click the green **Code** button, then **Download ZIP**.
-2. Extract the ZIP anywhere (for example `Documents/scholarship-agent`).
+2. Extract the ZIP anywhere (for example `Documents/dara-scholarship-agent`).
 3. Start the app:
-   - **Windows:** double-click **`run.bat`**.
-   - **macOS / Linux:** open a terminal in the folder and run `bash run.sh`.
+   - **Windows:** double-click **`Run (Windows).bat`**.
+   - **macOS / Linux:** open a terminal in the folder and run `bash "Run (Mac).sh"`.
 
    The first launch creates a virtual environment, installs the dependencies, creates your `.env` file and opens the app at **http://localhost:8501**. Later launches take a few seconds.
 4. Add your Gemini API key in the app (**Settings** in the sidebar) or in `.env`.
@@ -131,11 +131,11 @@ flowchart LR
 ### 🌿 Method 2: With Git (best for updates and contributors)
 
 ```bash
-git clone https://github.com/idanieldara/scholarship-agent.git
-cd scholarship-agent
+git clone https://github.com/idanieldara/dara-scholarship-agent.git
+cd dara-scholarship-agent
 ```
 
-Then start it with `run.bat` (Windows) or `bash run.sh` (macOS / Linux), or manually:
+Then start it with `Run (Windows).bat` (Windows) or `bash "Run (Mac).sh"` (macOS / Linux), or manually:
 
 ```bash
 python -m venv venv
@@ -147,13 +147,13 @@ streamlit run app.py
 
 Update any time with `git pull`. The launch scripts reinstall changed dependencies automatically; when starting manually, run `pip install -r requirements.txt` again.
 
-> **Streamlit asks for an email on the first run?** Just press **Enter**. `run.bat` and `run.sh` skip this prompt automatically. Always run the app from the project folder.
+> **Streamlit asks for an email on the first run?** Just press **Enter**. `Run (Windows).bat` and `Run (Mac).sh` skip this prompt automatically. Always run the app from the project folder.
 
 <a id="launcher"></a>
 
-### 🖱️ Using the one-click launcher (`run.bat` / `run.sh`)
+### 🖱️ Using the one-click launcher (`Run (Windows).bat` / `Run (Mac).sh`)
 
-`run.bat` (Windows) and `run.sh` (macOS / Linux) start the app without typing any commands. On every launch they:
+`Run (Windows).bat` (Windows) and `Run (Mac).sh` (macOS / Linux) start the app without typing any commands. On every launch they:
 
 1. create the virtual environment `venv` if it does not exist (first run only),
 2. check that all dependencies are installed and up to date,
@@ -163,16 +163,16 @@ Update any time with `git pull`. The launch scripts reinstall changed dependenci
 
 **On Windows**
 
-1. Make sure Python 3.10 or newer is installed (tick **Add Python to PATH** during setup).
-2. Open the project folder and **double-click `run.bat`**.
+1. Make sure Python 3.10 to 3.14 (3.12 or 3.13 recommended) is installed (tick **Add Python to PATH** during setup).
+2. Open the project folder and **double-click `Run (Windows).bat`**.
 3. A black Command Prompt window opens. The first launch takes a few minutes while packages install; later launches take a few seconds.
 4. When the app is ready your browser opens. If it does not, open **http://localhost:8501** yourself.
 
-**On macOS / Linux:** open a terminal in the project folder and run `bash run.sh`.
+**On macOS / Linux:** open a terminal in the project folder and run `bash "Run (Mac).sh"`.
 
 > **Good to know**
 > - Keep the black window open while you use the app. Closing it (or pressing `Ctrl + C`) stops the app.
-> - If you see *Python 3.10+ is required*, Python is missing or not on your PATH. Reinstall it and tick **Add Python to PATH**.
+> - If you see *No supported Python found*, install Python 3.12 or 3.13 and tick **Add Python to PATH**.
 > - Add your Gemini API key in the app (**Settings** in the sidebar) or in `.env` (`GEMINI_API_KEY=...`).
 > - Prefer the terminal? The manual commands in Method 2 work exactly the same.
 
@@ -231,7 +231,7 @@ Update any time with `git pull`. The launch scripts reinstall changed dependenci
 
 ```text
 dara-scholarship-agent/
-├── run.bat / run.sh    # one-click launcher (Windows / macOS-Linux)
+├── Run (Windows).bat / Run (Mac).sh    # one-click launcher (Windows / macOS-Linux)
 ├── app.py              # Streamlit UI, filters, language and RTL handling
 ├── agent.py            # Gemini agent: web search, enrichment, retries and fallback
 ├── sources.py          # Website crawlers (no AI) and date/level parsing
@@ -283,6 +283,9 @@ GitHub stores your code; it does not run Streamlit apps. To make the app availab
 | `429` / `RESOURCE_EXHAUSTED` | Quota or rate limit reached. The app switches to the fallback model; reduce passes (turn off *Deep search*), wait a minute, or enable billing. |
 | `503 UNAVAILABLE` | Model overloaded. The app retries automatically (3, 6, 12, 24 s) and then uses the fallback model. |
 | `403 Forbidden` for a website | That site blocks automated access. Use another source or the AI search tab. |
+| `ERROR: Could not open requirements file ... 'requirements.txt'` | The launcher is not next to the project files (for example it was run from inside the ZIP, or moved out of the folder). Extract the **whole** ZIP (right-click, *Extract All*) and run the launcher from inside the extracted project folder. Also check that `requirements.txt` exists in your repository. The newer launcher shows a clear message for this. |
+| `Microsoft Visual C++ 14.0 or greater is required` / `Failed building wheel` (pyarrow, pyyaml) | Your Python is too new (for example 3.15) and some packages have no pre-built version. Install Python 3.12 or 3.13, delete the `venv` folder and run `Run (Windows).bat` again; the launcher picks a supported Python automatically. |
+| `'streamlit' is not recognized` | The dependencies failed to install. Fix the error shown above it (see the rows above), then run the launcher again. |
 | Persian font not applied | Keep `static/Sans-Regular.woff2` and `static/Sans-Bold.woff2` next to `app.py` and restart the app. |
 | Few AI results | Gemini is not a crawler. Use website import for volume, and AI search for discovery. |
 
@@ -307,7 +310,7 @@ GitHub stores your code; it does not run Streamlit apps. To make the app availab
 ## 📋 Changelog
 
 All notable changes are documented in [CHANGELOG.md](CHANGELOG.md).
-The latest release is **v0.5.0**: one-click launchers (`run.bat` / `run.sh`) and two installation methods.
+The latest release is **v0.5.3**: the launchers now explain clearly when they are run outside the project folder.
 <a id="contributing"></a>
 
 ## 🤝 Contributing

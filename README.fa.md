@@ -93,8 +93,8 @@
 </div>
 
 ```bash
-git clone https://github.com/idanieldara/dara-scholarship-agent.git
-cd dara-scholarship-agent
+git clone https://github.com/idanieldara/scholarship-agent.git
+cd scholarship-agent
 ```
 
 <div dir="rtl">

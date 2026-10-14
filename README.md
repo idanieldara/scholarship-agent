@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/screenshots/banner.jpg" alt="Dara Scholarship Agent: AI scholarship finder powered by Google Gemini, built with Python and Streamlit" width="860">
+<img src="assets/screenshots/banner.jpg" alt="Scholarship Agent: AI scholarship finder powered by Google Gemini, built with Python and Streamlit" width="860">
 
 <br />
 
@@ -116,7 +116,7 @@ flowchart LR
 ### 📦 Method 1: Direct download (no Git needed)
 
 1. Open the repository page on GitHub, click the green **Code** button, then **Download ZIP**.
-2. Extract the ZIP anywhere (for example `Documents/dara-scholarship-agent`).
+2. Extract the ZIP anywhere (for example `Documents/scholarship-agent`).
 3. Start the app:
    - **Windows:** double-click **`Run (Windows).bat`**.
    - **macOS / Linux:** open a terminal in the folder and run `bash "Run (Mac).sh"`.
@@ -131,8 +131,8 @@ flowchart LR
 ### 🌿 Method 2: With Git (best for updates and contributors)
 
 ```bash
-git clone https://github.com/idanieldara/dara-scholarship-agent.git
-cd dara-scholarship-agent
+git clone https://github.com/idanieldara/scholarship-agent.git
+cd scholarship-agent
 ```
 
 Then start it with `Run (Windows).bat` (Windows) or `bash "Run (Mac).sh"` (macOS / Linux), or manually:

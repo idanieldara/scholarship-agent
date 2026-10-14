@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/screenshots/banner.jpg" alt="Dara Burs Ajanı: Google Gemini ile çalışan yapay zekâ burs bulucu, Python ve Streamlit ile geliştirildi" width="860">
+<img src="assets/screenshots/banner.jpg" alt="Burs Ajanı: Google Gemini ile çalışan yapay zekâ burs bulucu, Python ve Streamlit ile geliştirildi" width="860">
 
 <br />
 
-# 🎓 Dara Burs Ajanı (Dara Scholarship Agent)
+# 🎓 Dara Burs Ajanı (Scholarship Agent)
 
 **Ücretsiz ve açık kaynaklı yapay zekâ burs bulucu. Dünyadaki bursları eğitim düzeyine, hedef ülkeye, alana, finansman türüne ve kendi uyruğunuza göre arayın, filtreleyin ve karşılaştırın.**
 
@@ -27,7 +27,7 @@
 <details open>
 <summary><b>📑 İçindekiler</b></summary>
 
-- [📖 Dara Burs Ajanı nedir?](#what-is)
+- [📖 Burs Ajanı nedir?](#what-is)
 - [✨ Özellikler](#features)
 - [🧠 Nasıl çalışır?](#how-it-works)
 - [🚀 Hızlı başlangıç](#quick-start)
@@ -55,10 +55,10 @@
 
 <a id="what-is"></a>
 
-## 📖 Dara Burs Ajanı nedir?
+## 📖 Burs Ajanı nedir?
 
 **Tam burslu** bir program bulmak, her biri farklı tasarıma, son tarihe ve koşula sahip onlarca siteyi açmak demektir.
-**Dara Burs Ajanı**, bu işi sizin yerinize yapan bir **burs arama motoru ve yapay zekâ ajanıdır**:
+**Burs Ajanı**, bu işi sizin yerinize yapan bir **burs arama motoru ve yapay zekâ ajanıdır**:
 
 1. popüler burs sitelerinden **yüzlerce bursu saniyeler içinde içe aktarır** (yapay zekâ ve API anahtarı gerekmez),
 2. bu sitelerde olmayan bursları **Gemini + Google Search** ile web'de arar,
@@ -108,7 +108,7 @@ flowchart LR
 ### 📦 Yöntem 1: Doğrudan indirme (Git gerekmez)
 
 1. GitHub'da depo sayfasını açın, yeşil **Code** düğmesine ve ardından **Download ZIP**'e tıklayın.
-2. ZIP dosyasını istediğiniz yere çıkarın (örneğin `Belgeler/dara-scholarship-agent`).
+2. ZIP dosyasını istediğiniz yere çıkarın (örneğin `Belgeler/scholarship-agent`).
 3. Uygulamayı başlatın:
    - **Windows:** **`Run (Windows).bat`** dosyasına çift tıklayın.
    - **macOS / Linux:** klasörde bir terminal açıp `bash "Run (Mac).sh"` komutunu çalıştırın.
@@ -123,8 +123,8 @@ flowchart LR
 ### 🌿 Yöntem 2: Git ile (güncellemeler ve katkıda bulunanlar için ideal)
 
 ```bash
-git clone https://github.com/idanieldara/dara-scholarship-agent.git
-cd dara-scholarship-agent
+git clone https://github.com/idanieldara/scholarship-agent.git
+cd scholarship-agent
 ```
 
 Ardından `Run (Windows).bat` (Windows) veya `bash "Run (Mac).sh"` (macOS / Linux) ile başlatın ya da elle çalıştırın:
@@ -222,7 +222,7 @@ streamlit run app.py
 ## 🗂️ Proje yapısı
 
 ```text
-dara-scholarship-agent/
+scholarship-agent/
 ├── Run (Windows).bat / Run (Mac).sh    # tek tıkla başlatıcı (Windows / macOS-Linux)
 ├── app.py              # Streamlit arayüzü, filtreler, dil ve RTL yönetimi
 ├── agent.py            # Gemini ajanı: web araması, zenginleştirme, yeniden deneme ve yedek model
@@ -262,7 +262,7 @@ Desteklenen biçimler: `.jpg`, `.png`, `.webp` (fotoğraf her zaman `.svg` dosya
 
 GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı çevrimiçi sunmak için:
 
-- **Streamlit Community Cloud (ücretsiz):** depoyu GitHub'a gönderin, <https://share.streamlit.io> adresini açın, **Create app**'e tıklayın, depoyu, `main` dalını ve `app.py` dosyasını seçip **Deploy** edin.
+- **Streamlit Community Cloud (ücretsiz):** depoyu GitHub'a gönderin, <share.streamlit.io> adresini açın, **Create app**'e tıklayın, depoyu, `main` dalını ve `app.py` dosyasını seçip **Deploy** edin.
   Herkese açık bir uygulamada kendi API anahtarınızı *Secrets* içine **koymayın** (herkes kotanızı harcayabilir); boş bırakın ki her ziyaretçi kendi anahtarını kenar çubuğuna girsin. Uygulama yeniden başlayınca kayıtlı sonuçlar sıfırlanır.
 - **Kendi sunucunuz (VPS):** `pip install -r requirements.txt`, ardından Nginx/Caddy arkasında HTTPS ile `streamlit run app.py --server.port 8501 --server.address 0.0.0.0` çalıştırın.
 

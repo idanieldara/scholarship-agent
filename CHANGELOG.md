@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-16
+
+### Added
+- **Saved API key**: the Gemini key typed in the sidebar is written to the local `.env` file and pre-filled after a refresh or restart. It is only saved when the app is opened on this computer (`localhost`); on a server it stays in the browser session and never touches the disk. A *Remember the key on this computer* checkbox and a *Forget saved key* button give you control, and `DARA_SAVE_KEY=1|0` overrides the automatic detection.
+- Nationality and Gemini model are remembered in `settings.json`, together with the language.
+- **Get a free API key ↗** button under the key field (opens Google AI Studio in a new tab). The link inside the help tooltip is now a real Markdown link.
+- **Duplicate merging**: the same scholarship found on several websites or by the AI search (matched by link and by normalised title) is stored once, with countries, sources and data combined. Duplicates left in an existing database are merged automatically when the app starts.
+- **Re-import refreshes the list**: importing again adds new scholarships, refreshes changed deadlines, and keeps funding / eligibility data that AI enrichment filled in.
+- **NEW** badge for scholarships added in the last 3 days; the newest additions are listed first.
+- Import and AI search report how many results were new, updated or already up to date.
+- The AI search receives the titles you already saved and is asked to find different scholarships.
+- `storage.py` (settings and API-key persistence) and the optional `DARA_SAVE_KEY` setting.
+
+### Changed
+- Saving results merges records instead of replacing the one with the same title and country.
+- The SQLite file is created next to the app files, whichever folder the app is started from.
+
+### Fixed
+- The API key had to be typed again after every refresh or browser restart.
+- The link in the API-key help tooltip could not be clicked.
+- The same scholarship was listed several times when it came from different sources.
+- Importing a website again overwrote funding and eligibility data filled in by AI enrichment.
+
 ## [0.5.3] - 2026-10-14
 
 ### Fixed
@@ -127,7 +150,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Filters for country, field of study, funding type, deadline and a selectable nationality (not limited to one country).
 - Local SQLite storage, CSV export and a local-first setup that runs on your own computer.
 
-[Unreleased]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.3...HEAD
+[Unreleased]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.3...v0.6.0
 [0.5.3]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/YOUR_USERNAME/dara-scholarship-agent/compare/v0.5.0...v0.5.1

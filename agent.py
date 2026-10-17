@@ -85,11 +85,13 @@ def _to_json(client, models, instructions, text, schema, log):
         return []
 
 
-def _search_once(client, models, levels, where, field, nationality, funding, limit, out_lang, log):
+def _search_once(client, models, levels, where, field, nationality, funding, limit, out_lang, log, known=None):
     if not nationality or nationality.startswith("Any"):
         nat = "open to international students of any nationality"
     else:
         nat = f"that citizens of {nationality} are eligible to apply for"
+    skip = ("\nThe user already has the scholarships below saved. Do NOT list them again; find DIFFERENT ones:\n- "
+            + "\n- ".join(known[:120])) if known else ""
     prompt = f"""Today is {date.today().isoformat()}.
 Use Google Search (run several different searches) to find as many REAL scholarships as you can,
 up to {limit}, {nat}.
@@ -103,7 +105,7 @@ Skip ones that no longer exist. Prefer official pages. Do NOT stop after a few r
 For each scholarship give: title, level, country, university, fields, funding type, amount,
 deadline, eligible nationalities, language requirement, official URL, and a 1-2 sentence summary.
 Write the summary in {out_lang}; keep titles, names and URLs in their original form.
-Do not invent anything; write 'unknown' if unsure."""
+Do not invent anything; write 'unknown' if unsure.{skip}"""
     r1 = _gen(client, models, prompt, dict(tools=[types.Tool(google_search=types.GoogleSearch())]), log)
     raw = r1.text or ""
     if not raw.strip():
@@ -128,7 +130,7 @@ Do not invent anything; write 'unknown' if unsure."""
 
 
 def search_scholarships(api_key, levels, countries, field, nationality, funding,
-                        per_pass=15, deep=True, model=None, out_lang="English", log=None):
+                        per_pass=15, deep=True, model=None, out_lang="English", log=None, known_titles=None):
     """No countries given -> all countries (one pass per world region when deep=True)."""
     client = genai.Client(api_key=api_key)
     models = _models(model)
@@ -144,7 +146,7 @@ def search_scholarships(api_key, levels, countries, field, nationality, funding,
             log(f"🔎 Pass {n}/{len(passes)}: {where}")
         try:
             for it in _search_once(client, models, levels, where, field, nationality,
-                                   funding, per_pass, out_lang, log):
+                                   funding, per_pass, out_lang, log, known_titles):
                 found[(it["title"].lower(), it["country"].lower())] = it
         except Exception as e:
             if log:

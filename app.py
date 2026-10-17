@@ -15,11 +15,12 @@ import countries  # noqa: E402
 import db         # noqa: E402
 import i18n       # noqa: E402
 import sources    # noqa: E402
+import storage    # noqa: E402
 
 APP_NAME = "Dara Scholarship Agent"
 SITE_URL = "https://danieldara.com"
 SUPPORT_EMAIL = "daniel@danieldara.com"
-SETTINGS_FILE = Path(__file__).with_name("settings.json")
+KEY_URL = "https://aistudio.google.com/api-keys"
 PAGE_SIZE = 30
 
 st.set_page_config(page_title=APP_NAME, page_icon="🎓", layout="wide")
@@ -58,31 +59,19 @@ def _initial_lang():
     q = st.query_params.get("lang")
     if q in i18n.LANGS:
         return q
-    try:
-        saved = json.loads(SETTINGS_FILE.read_text(encoding="utf-8")).get("lang")
-        if saved in i18n.LANGS:
-            return saved
-    except Exception:
-        pass
-    return "en"
+    saved = storage.load_settings().get("lang")
+    return saved if saved in i18n.LANGS else "en"
 
 
-def _remember_lang(code):
-    if st.query_params.get("lang") != code:
-        st.query_params["lang"] = code
-    try:
-        if json.loads(SETTINGS_FILE.read_text(encoding="utf-8")).get("lang") == code:
-            return
-    except Exception:
-        pass
-    try:
-        SETTINGS_FILE.write_text(json.dumps({"lang": code}), encoding="utf-8")
-    except Exception:
-        pass
-
-
+_S = storage.load_settings()
 if "lang" not in st.session_state:
     st.session_state["lang"] = _initial_lang()
+if "nat" not in st.session_state:
+    st.session_state["nat"] = _S["nat"] if _S.get("nat") in NATIONALITIES else NATIONALITIES[0]
+if "nat_custom" not in st.session_state:
+    st.session_state["nat_custom"] = str(_S.get("nat_custom", ""))
+if "model" not in st.session_state:
+    st.session_state["model"] = _S["model"] if _S.get("model") in MODELS else MODELS[0]
 lang = st.session_state["lang"]
 RTL = lang in i18n.RTL
 AI_LANG = i18n.AI_LANG[lang]
@@ -150,6 +139,7 @@ details.sch summary::-webkit-details-marker{display:none;}
 .thumb{flex:0 0 112px;height:80px;border-radius:12px;background-size:cover;background-position:center;background-color:#e8eefc;}
 .info{flex:1;min-width:0;}
 .ttl{font-weight:700;color:#0f172a;font-size:1rem;line-height:1.4;}
+.new-badge{background:#ef4444;color:#fff;border-radius:6px;padding:1px 7px;font-size:.68rem;font-weight:700;margin-inline-start:8px;vertical-align:middle;}
 .meta{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:6px;color:#64748b;font-size:.82rem;}
 .ic{filter:grayscale(1);opacity:.65;margin-inline-end:4px;}
 .chev{flex:0 0 36px;height:36px;border:1px solid #e5e7eb;border-radius:50%;display:grid;place-items:center;color:#475569;font-size:1.3rem;line-height:1;transition:transform .2s;}
@@ -194,14 +184,29 @@ with st.sidebar:
                     format_func=lambda v: {"search": "🔍  ", "saved": "🔖  "}[v] + T("nav_" + v))
     with st.expander(T("settings")):
         st.selectbox("🌐 Language / زبان / Dil / اللغة", list(i18n.LANGS), format_func=lambda k: i18n.LANGS[k], key="lang")
-        _remember_lang(st.session_state["lang"])
-        key = st.text_input(T("api_key"), value=os.getenv("GEMINI_API_KEY", ""), type="password", help=T("api_key_help"))
-        nat = st.selectbox(T("nationality"), NATIONALITIES, index=0,
+        env_key = os.getenv("GEMINI_API_KEY", "")
+        key = st.text_input(T("api_key"), value=env_key, type="password", help=T("api_key_help"))
+        st.link_button(T("get_key"), KEY_URL, use_container_width=True)
+        if storage.can_save_key():
+            remember = st.checkbox(T("key_remember"), value=True, key="remember_key")
+            if remember and key and key != env_key:
+                storage.save_env_value("GEMINI_API_KEY", key)
+                st.toast(T("key_saved"))
+            if env_key and st.button(T("key_forget")):
+                storage.save_env_value("GEMINI_API_KEY", None)
+                st.rerun()
+        else:
+            st.caption(T("key_session_only"))
+        nat = st.selectbox(T("nationality"), NATIONALITIES, key="nat",
                            format_func=lambda x: T("nat_any") if x.startswith("Any")
                            else T("nat_other") if x.startswith("Other") else x)
         if nat.startswith("Other"):
-            nat = st.text_input(T("nat_type"), "")
-        model = st.selectbox(T("model"), MODELS)
+            nat = st.text_input(T("nat_type"), key="nat_custom")
+        model = st.selectbox(T("model"), MODELS, key="model")
+        if st.query_params.get("lang") != lang:
+            st.query_params["lang"] = lang
+        storage.save_settings({"lang": lang, "nat": st.session_state["nat"],
+                               "nat_custom": st.session_state.get("nat_custom", ""), "model": model})
         st.caption(T("fallback", m=agent.FALLBACK_MODEL))
         if st.button(T("clear")):
             db.clear()
@@ -254,7 +259,7 @@ def render_collect():
                     st.warning(T("no_site"))
                 else:
                     with st.status(T("importing"), expanded=True) as stt:
-                        total = 0
+                        tot = {"n": 0, "added": 0, "updated": 0, "unchanged": 0}
                         for name, cfg in targets:
                             try:
                                 found = sources.crawl(
@@ -262,15 +267,20 @@ def render_collect():
                                     cfg.get("funding"),
                                     progress=lambda p, t_, n, name=name: stt.write(
                                         T("page_progress", site=name, p=p, t=t_, n=n)))
-                                db.save(found)
-                                total += len(found)
+                                s_ = db.save(found)
+                                tot["n"] += len(found)
+                                for k_ in ("added", "updated", "unchanged"):
+                                    tot[k_] += s_[k_]
+                                stt.write("✅ " + name + ": " + T("save_stats", n=len(found), added=s_["added"],
+                                                                 updated=s_["updated"], same=s_["unchanged"]))
                             except Exception as e:
                                 code = getattr(getattr(e, "response", None), "status_code", None)
                                 if code in (401, 403, 429):
                                     stt.write(T("site_blocked", site=name, code=code))
                                 else:
                                     stt.write(T("site_failed", site=name, e=e))
-                        stt.update(label=T("imported", n=total), state="complete")
+                        stt.update(label=T("save_stats", n=tot["n"], added=tot["added"], updated=tot["updated"], same=tot["unchanged"]),
+                                   state="complete")
         with tab_b:
             st.caption(T("ai_caption"))
             c1, c2, c3 = st.columns(3)
@@ -289,9 +299,11 @@ def render_collect():
                             found = agent.search_scholarships(
                                 key, levels, [x.strip() for x in countries_txt.split(",") if x.strip()],
                                 field, nat, "" if funding == "Any" else funding,
-                                deep=deep, model=model, out_lang=AI_LANG, log=stt.write)
-                            db.save(found)
-                            stt.update(label=T("found_saved", n=len(found)), state="complete")
+                                deep=deep, model=model, out_lang=AI_LANG, log=stt.write,
+                                known_titles=[x["title"] for x in db.all_items()])
+                            s_ = db.save(found)
+                            stt.update(label=T("save_stats", n=len(found), added=s_["added"], updated=s_["updated"],
+                                               same=s_["unchanged"]), state="complete")
                         except Exception as e:
                             stt.update(label=T("search_failed"), state="error")
                             st.error(T("error", e=e))
@@ -308,6 +320,12 @@ def card_html(i):
             dl_cls = "dl-exp" if days < 0 else ("dl-soon" if days <= 30 else "")
         except ValueError:
             pass
+    badge = ""
+    try:
+        if (date.today() - date.fromisoformat(i.get("first_seen") or "")).days <= 3:
+            badge = f'<span class="new-badge">{esc(T("badge_new"))}</span>'
+    except ValueError:
+        pass
     ic = lambda e: f'<span class="ic">{e}</span>'
     meta = [ic("📍") + esc(i["country"]), ic("🎓") + esc(", ".join(lvl(l) for l in i["level"])),
             ic("💰") + esc(i18n.label(lang, "chip", ft))]
@@ -323,7 +341,7 @@ def card_html(i):
             + cell("source", i.get("source", "ai-search")) + '</div>'
             + f'<a class="btn" href="{esc(href)}" target="_blank" rel="noopener noreferrer">{esc(T("official"))} ↗</a>')
     return (f'<details class="sch{" rtl" if RTL else ""}"><summary><div class="thumb c-{code}"></div>'
-            f'<div class="info"><div class="ttl">{esc(i["title"])}</div><div class="meta">'
+            f'<div class="info"><div class="ttl">{esc(i["title"])}{badge}</div><div class="meta">'
             + "".join(f"<span>{m}</span>" for m in meta)
             + f'</div></div><div class="chev">›</div></summary><div class="sbody">{body}</div></details>')
 
@@ -411,6 +429,9 @@ def render_browse(items):
 
 
 # ============================================================== page
+if "deduped" not in st.session_state:
+    db.save([])                      # merges duplicates left over from older versions
+    st.session_state["deduped"] = True
 all_items = db.all_items()
 hero(all_items)
 if page == "search":

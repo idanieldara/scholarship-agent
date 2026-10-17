@@ -14,28 +14,28 @@ TEXT = {
     "api_key": _t("Gemini API key", "کلید API جمینای", "Gemini API anahtarı", "مفتاح Gemini API"),
     "api_key_help": _t(
         "**How to get a Gemini API key**\n\n"
-        "1. Go to https://aistudio.google.com/api-keys\n"
+        "1. Go to [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys)\n"
         "2. Sign in with your Google account (@gmail.com). If you don't have one, you will be asked to create one.\n"
         "3. Click **Create API key**.\n"
         "4. In the window that opens, enter a name for your key and click **Create key**.\n"
         "5. After it is created, click the name shown under the **Key** column, copy your API key "
         "and paste it into this box.",
         "**مراحل دریافت کلید API**\n\n"
-        "1. به آدرس https://aistudio.google.com/api-keys مراجعه کنید.\n"
+        "1. به آدرس [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys) مراجعه کنید.\n"
         "2. با اکانت ایمیل خود (@gmail.com) وارد شوید؛ اگر اکانت ندارید، از شما خواسته می‌شود یک اکانت بسازید.\n"
         "3. روی گزینه «ایجاد کلید API» یا **Create API key** کلیک کنید.\n"
         "4. در پنجره باز شده یک نام برای کلید خود وارد کنید و روی **Create key** بزنید.\n"
         "5. بعد از ایجاد، روی نامی که زیر بخش **Key** نوشته شده کلیک کنید، کلید API خود را کپی کنید "
         "و در همین کادر وارد کنید.",
         "**Gemini API anahtarı nasıl alınır**\n\n"
-        "1. https://aistudio.google.com/api-keys adresine gidin.\n"
+        "1. [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys) adresine gidin.\n"
         "2. Google hesabınızla (@gmail.com) giriş yapın. Hesabınız yoksa bir hesap oluşturmanız istenir.\n"
         "3. **API anahtarı oluştur** (**Create API key**) seçeneğine tıklayın.\n"
         "4. Açılan pencerede anahtarınız için bir ad girin ve **Create key**'e tıklayın.\n"
         "5. Oluşturulduktan sonra **Key** bölümünün altında yazan ada tıklayın, API anahtarınızı kopyalayın "
         "ve bu kutuya yapıştırın.",
         "**كيفية الحصول على مفتاح Gemini API**\n\n"
-        "1. افتح الرابط https://aistudio.google.com/api-keys\n"
+        "1. افتح الرابط [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys)\n"
         "2. سجّل الدخول بحساب Google الخاص بك (@gmail.com). إذا لم يكن لديك حساب فسيُطلب منك إنشاء حساب.\n"
         "3. انقر على **إنشاء مفتاح API** (**Create API key**).\n"
         "4. في النافذة التي تظهر، أدخل اسمًا لمفتاحك ثم انقر على **Create key**.\n"
@@ -173,6 +173,13 @@ TEXT = {
     'chip_Partial': _t('Partial funding', 'تأمین مالی بخشی', 'Kısmi burs', 'تمويل جزئي'),
     'chip_Tuition only': _t('Tuition only', 'فقط شهریه', 'Yalnızca harç', 'الرسوم الدراسية فقط'),
     'chip_Unknown': _t('Funding: unknown', 'تأمین مالی: نامشخص', 'Finansman: bilinmiyor', 'التمويل: غير معروف'),
+    'get_key': _t('Get a free API key ↗', 'دریافت کلید API رایگان ↗', 'Ücretsiz API anahtarı al ↗', 'احصل على مفتاح API مجاني ↗'),
+    'key_remember': _t('Remember the key on this computer', 'ذخیره کلید روی این کامپیوتر', 'Anahtarı bu bilgisayarda hatırla', 'تذكّر المفتاح على هذا الكمبيوتر'),
+    'key_saved': _t('API key saved to .env on this computer', 'کلید API در فایل .env همین کامپیوتر ذخیره شد', 'API anahtarı bu bilgisayardaki .env dosyasına kaydedildi', 'تم حفظ مفتاح API في ملف .env على هذا الكمبيوتر'),
+    'key_forget': _t('Forget saved key', 'حذف کلید ذخیره\u200cشده', 'Kayıtlı anahtarı unut', 'حذف المفتاح المحفوظ'),
+    'key_session_only': _t('Server mode: the key is kept only for this browser session and is never written to disk.', 'حالت سرور: کلید فقط برای همین نشست مرورگر نگه داشته می\u200cشود و روی دیسک ذخیره نمی\u200cشود.', 'Sunucu modu: anahtar yalnızca bu tarayıcı oturumu için tutulur ve diske yazılmaz.', 'وضع الخادم: يُحفظ المفتاح لهذه الجلسة فقط ولا يُكتب على القرص.'),
+    'save_stats': _t('{n} processed: {added} new, {updated} updated, {same} already up to date', '{n} مورد بررسی شد: {added} جدید، {updated} به\u200cروزرسانی\u200cشده، {same} بدون تغییر', '{n} işlendi: {added} yeni, {updated} güncellendi, {same} zaten güncel', 'تمت معالجة {n}: {added} جديدة، {updated} محدّثة، {same} دون تغيير'),
+    'badge_new': _t('NEW', 'جدید', 'YENİ', 'جديد'),
     # level / funding labels
     "lvl_Bachelor": _t("Bachelor", "لیسانس", "Lisans", "البكالوريوس"),
     "lvl_Master": _t("Master", "ارشد", "Yüksek lisans", "الماجستير"),

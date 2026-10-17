@@ -81,7 +81,8 @@ Yurt dışında **Lisans, Yüksek lisans, Doktora ve Doktora sonrası** bursu ar
 - 💾 **Yerel öncelikli**: sonuçlar yerel SQLite veritabanına kaydedilir. Filtreleme anlıktır ve API çağrısı gerektirmez.
 - ⬇️ Excel ve Google Sheets için **CSV dışa aktarma**.
 - 🛡️ **Güvenilir tasarım**: aşırı yüklenen modeller için otomatik yeniden deneme (503), kota hatalarında (429) hızlı geçiş ve yapılandırılabilir yedek model.
-- 🔐 **Gizli**: API anahtarınız yalnızca sizin bilgisayarınızda kalır (`.env` veya kenar çubuğu alanı).
+- 🔁 **Akıllı birleştirme**: birkaç sitede veya yapay zekâ aramasında bulunan aynı burs yalnızca bir kez görünür. Yeniden içe aktarmak yeni bursları ekler ve değişen son tarihleri günceller; yapay zekânın doldurduğu veriler silinmez. Yeni gelenler **YENİ** rozeti taşır.
+- 🔐 **Gizli ve hatırlanan**: API anahtarınız yalnızca sizin bilgisayarınızda kalır. Kenar çubuğu onu yerel `.env` dosyanıza kaydeder (Git'e asla gönderilmez); böylece yenilemeden sonra yeniden yazmanız gerekmez. Dil, uyruk ve model de hatırlanır.
 
 <a id="how-it-works"></a>
 
@@ -179,6 +180,8 @@ streamlit run app.py
 5. **Key** sütununun altındaki ada tıklayın, anahtarı kopyalayın ve `.env` dosyasına (`GEMINI_API_KEY=...`) veya uygulamanın kenar çubuğundaki alana yapıştırın.
 
 > Site içe aktarma sekmesi **API anahtarı olmadan** çalışır.
+>
+> Uygulamada anahtar alanının altındaki **Ücretsiz API anahtarı al ↗** düğmesi yukarıdaki sayfayı açar. **Anahtarı bu bilgisayarda hatırla** işaretliyken (varsayılan) anahtar yerel `.env` dosyasına kaydedilir; yenileme veya yeniden başlatmadan sonra tekrar yazmanız gerekmez. Anahtar yalnızca uygulama `localhost` üzerinden açıldığında diske yazılır; sunucuda tarayıcı oturumunda kalır.
 
 <a id="configuration"></a>
 
@@ -189,15 +192,16 @@ streamlit run app.py
 | `GEMINI_API_KEY` | yok | Google AI Studio anahtarınız (veya kenar çubuğuna yazın). |
 | `GEMINI_MODEL` | `gemini-2.5-flash` | Ana model. Kenar çubuğundan da değiştirilebilir. |
 | `GEMINI_FALLBACK_MODEL` | `gemini-2.5-flash-lite` | Ana model aşırı yüklenince veya kota dolunca otomatik kullanılır. |
+| `DARA_SAVE_KEY` | otomatik | `1` kenar çubuğunun anahtarı her zaman `.env` dosyasına kaydetmesine izin verir, `0` asla vermez. Varsayılan olarak yalnızca uygulama `localhost` üzerinden açıldığında izin verilir (herkese açık sunucuda asla). |
 
 <a id="usage"></a>
 
 ## 🧭 Kullanım
 
-1. Kenar çubuğunda **Ayarlar**'ı açıp dilinizi, uyruğunuzu, Gemini modelinizi ve API anahtarınızı seçin (her şeyi görmek için *Herhangi biri* uyruğunu seçin). Kenar çubuğu menüsüyle **Burs ara** ve **Kayıtlı sonuçlar** arasında geçiş yapın.
+1. Kenar çubuğunda **Ayarlar**'ı açıp dilinizi, uyruğunuzu, Gemini modelinizi ve API anahtarınızı seçin (her şeyi görmek için *Herhangi biri* uyruğunu seçin). Kenar çubuğu menüsüyle **Burs ara** ve **Kayıtlı sonuçlar** arasında geçiş yapın. Anahtarınız, diliniz, uyruğunuz ve modeliniz oturumlar arasında hatırlanır.
 2. **Bursları toplayın**
-   - *Web sitelerinden içe aktar*: kaynakları seçin, en fazla sayfa sayısını belirleyin ve **İçe aktar**'a tıklayın.
-   - *Yapay zekâ web araması*: düzey, ülkeler (boş = hepsi), alan ve finansmanı seçip **Yapay zekâ ile burs ara**'ya tıklayın.
+   - *Web sitelerinden içe aktar*: kaynakları seçin, en fazla sayfa sayısını belirleyin ve **İçe aktar**'a tıklayın. Dilediğiniz zaman yeniden çalıştırın: yeni burslar eklenir, değişen son tarihler güncellenir ve tekrarlar birleştirilir.
+   - *Yapay zekâ web araması*: düzey, ülkeler (boş = hepsi), alan ve finansmanı seçip **Yapay zekâ ile burs ara**'ya tıklayın. Zaten kaydettiğiniz burslar atlanır, böylece yeni sonuçlar alırsınız; birkaç sitede bulunan burs tek kayıtta birleştirilir.
 3. **Göz atın ve filtreleyin**: düzey sekmelerini ve filtreleri kullanın. Uygunluğu bilinmeyen kayıtlar, fırsat kaçırmamanız için tutulur.
 4. **Yapay zekâ ile zenginleştirin** (isteğe bağlı): Gemini'nin finansman veya uyruk bilgisi eksik sonuçların sayfalarını okumasına izin verin.
 5. **CSV olarak dışa aktarın** ve başvurmadan önce her son tarihi resmî sayfada doğrulayın.
@@ -227,7 +231,8 @@ scholarship-agent/
 ├── app.py              # Streamlit arayüzü, filtreler, dil ve RTL yönetimi
 ├── agent.py            # Gemini ajanı: web araması, zenginleştirme, yeniden deneme ve yedek model
 ├── sources.py          # Site tarayıcıları (yapay zekâsız) ve tarih/düzey ayrıştırma
-├── db.py               # Yerel SQLite depolama ve filtre yardımcıları
+├── db.py               # Yerel SQLite depolama, tekrar birleştirme ve filtre yardımcıları
+├── storage.py          # ayarları (settings.json) ve API anahtarını (.env) yerel olarak kaydeder
 ├── i18n.py             # EN / FA / TR / AR çevirileri
 ├── countries.py        # ülke adı -> simge yapı görseli (SVG veya kendi fotoğrafınız)
 ├── assets/countries/   # simge yapı illüstrasyonları (de.svg, fr.svg, ...) + isteğe bağlı fotoğraflar
@@ -263,7 +268,7 @@ Desteklenen biçimler: `.jpg`, `.png`, `.webp` (fotoğraf her zaman `.svg` dosya
 GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı çevrimiçi sunmak için:
 
 - **Streamlit Community Cloud (ücretsiz):** depoyu GitHub'a gönderin, <share.streamlit.io> adresini açın, **Create app**'e tıklayın, depoyu, `main` dalını ve `app.py` dosyasını seçip **Deploy** edin.
-  Herkese açık bir uygulamada kendi API anahtarınızı *Secrets* içine **koymayın** (herkes kotanızı harcayabilir); boş bırakın ki her ziyaretçi kendi anahtarını kenar çubuğuna girsin. Uygulama yeniden başlayınca kayıtlı sonuçlar sıfırlanır.
+  Herkese açık bir uygulamada kendi API anahtarınızı *Secrets* içine **koymayın** (herkes kotanızı harcayabilir); boş bırakın ki her ziyaretçi kendi anahtarını kenar çubuğuna girsin. Uygulama yeniden başlayınca kayıtlı sonuçlar sıfırlanır. Sunucuda kenar çubuğu anahtarı asla diske yazmaz (bkz. `DARA_SAVE_KEY`).
 - **Kendi sunucunuz (VPS):** `pip install -r requirements.txt`, ardından Nginx/Caddy arkasında HTTPS ile `streamlit run app.py --server.port 8501 --server.address 0.0.0.0` çalıştırın.
 
 <a id="troubleshooting"></a>
@@ -278,6 +283,8 @@ GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı 
 | `ERROR: Could not open requirements file ... 'requirements.txt'` | Başlatıcı proje dosyalarının yanında değil (örneğin ZIP'in içinden çalıştırıldı veya klasörden çıkarıldı). ZIP'in **tamamını** çıkarın (sağ tık, *Tümünü ayıkla*) ve başlatıcıyı çıkarılan proje klasörünün içinden çalıştırın. Deponuzda `requirements.txt` dosyasının olduğunu da kontrol edin. Yeni başlatıcı bunu açık bir mesajla gösterir. |
 | `Microsoft Visual C++ 14.0 or greater is required` / `Failed building wheel` (pyarrow, pyyaml) | Python sürümünüz çok yeni (örneğin 3.15) ve bazı paketlerin hazır sürümü yok. Python 3.12 veya 3.13 kurun, `venv` klasörünü silin ve `Run (Windows).bat` dosyasını yeniden çalıştırın; başlatıcı desteklenen bir Python'u otomatik seçer. |
 | `'streamlit' is not recognized` | Bağımlılıklar yüklenemedi. Üstteki hatayı (yukarıdaki satırlara bakın) giderin, sonra başlatıcıyı yeniden çalıştırın. |
+| API anahtarı hatırlanmıyor | Kaydetme yalnızca uygulama bu bilgisayarda (`localhost`) açıldığında ve *Anahtarı bu bilgisayarda hatırla* işaretliyken çalışır. Anahtarı kendiniz `.env` dosyasına yazabilir veya `DARA_SAVE_KEY=1` ayarlayabilirsiniz. |
+| Aynı burs iki kez görünüyor | Tekrarlar her içe aktarmada, yapay zekâ aramasında ve uygulama açılışında otomatik birleştirilir. Hâlâ iki kayıt görünüyorsa başlıkları çok farklıdır ve farklı burslar sayılırlar. |
 | Farsça yazı tipi uygulanmıyor | `static/Sans-Regular.woff2` ve `static/Sans-Bold.woff2` dosyalarını `app.py` ile aynı yerde tutun ve uygulamayı yeniden başlatın. |
 | Yapay zekâ az sonuç veriyor | Gemini bir tarayıcı değildir. Hacim için site içe aktarmayı, keşif için yapay zekâ aramasını kullanın. |
 
@@ -303,7 +310,7 @@ GitHub kodunuzu saklar; Streamlit uygulamalarını çalıştırmaz. Uygulamayı 
 ## 📋 Değişiklik günlüğü
 
 Tüm önemli değişiklikler [CHANGELOG.md](CHANGELOG.md) dosyasında belgelenmiştir.
-Son sürüm **v0.5.3**: başlatıcılar proje klasörünün dışında çalıştırılınca artık açık bir mesaj veriyor.
+Son sürüm **v0.6.0**: API anahtarı ve ayarlar hatırlanıyor, tekrar eden burslar birleştiriliyor ve yeniden içe aktarma listeyi güncelliyor.
 
 <a id="contributing"></a>
 

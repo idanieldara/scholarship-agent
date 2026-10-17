@@ -81,7 +81,8 @@ It is built for students applying for **Bachelor, Master, PhD and Postdoc** scho
 - 💾 **Local-first**: results are saved in a local SQLite database. Filtering is instant and costs no API calls.
 - ⬇️ **Export to CSV** for Excel and Google Sheets.
 - 🛡️ **Reliable by design**: automatic retries for overloaded models (503), fast fallback on quota errors (429), and a configurable fallback model.
-- 🔐 **Private**: your API key stays on your machine (`.env` or the sidebar field).
+- 🔁 **Smart merging**: the same scholarship found on several websites or by the AI search appears only once. Importing again adds new scholarships and refreshes changed deadlines without erasing data filled in by AI; new arrivals carry a **NEW** badge.
+- 🔐 **Private and remembered**: your API key stays on your machine. The sidebar saves it to your local `.env` (never committed to Git) so you do not retype it after a refresh; language, nationality and model are remembered too.
 
 <!--
 ## 🖼️ Screenshots
@@ -187,6 +188,8 @@ Update any time with `git pull`. The launch scripts reinstall changed dependenci
 5. Click the key's name under the **Key** column, copy the key, and paste it into `.env` (`GEMINI_API_KEY=...`) or into the sidebar field of the app.
 
 > The website import tab works **without** any API key.
+>
+> In the app, the **Get a free API key ↗** button under the key field opens the page above. With **Remember the key on this computer** ticked (the default) the key is saved to the local `.env`, so you do not have to type it again after a refresh or restart. The key is only written to disk when the app is opened via `localhost`; on a server it stays in the browser session.
 
 <a id="configuration"></a>
 
@@ -197,15 +200,16 @@ Update any time with `git pull`. The launch scripts reinstall changed dependenci
 | `GEMINI_API_KEY` | none | Your Google AI Studio key (or type it in the sidebar). |
 | `GEMINI_MODEL` | `gemini-2.5-flash` | Main model. Can also be changed in the sidebar. |
 | `GEMINI_FALLBACK_MODEL` | `gemini-2.5-flash-lite` | Used automatically when the main model is overloaded or out of quota. |
+| `DARA_SAVE_KEY` | automatic | `1` always lets the sidebar save the key to `.env`, `0` never does. By default saving is allowed only when the app is opened via `localhost` (never on a public server). |
 
 <a id="usage"></a>
 
 ## 🧭 Usage
 
-1. Open **Settings** in the sidebar to choose your language, nationality, Gemini model and API key (pick *Any* nationality to see everything). Use the sidebar menu to switch between **Search scholarships** and **Saved results**.
+1. Open **Settings** in the sidebar to choose your language, nationality, Gemini model and API key (pick *Any* nationality to see everything). Use the sidebar menu to switch between **Search scholarships** and **Saved results**. Your key, language, nationality and model are remembered between sessions.
 2. **Collect scholarships**
-   - *Import from websites*: select sources, set max pages, click **Import**.
-   - *AI web search*: choose level, countries (empty = all), field and funding, then click **Find scholarships with AI**.
+   - *Import from websites*: select sources, set max pages, click **Import**. Run it again whenever you like: new scholarships are added, changed deadlines are refreshed and duplicates are merged.
+   - *AI web search*: choose level, countries (empty = all), field and funding, then click **Find scholarships with AI**. Scholarships you already saved are skipped, so you get fresh results, and anything found on several sites is merged into one entry.
 3. **Browse & filter**: use the level tabs and filters. Unknown eligibility rules are kept so you do not miss opportunities.
 4. **Enrich with AI** (optional): let Gemini read the pages of results that lack funding or nationality info.
 5. **Export CSV** and verify every deadline on the official page before applying.
@@ -235,7 +239,8 @@ dara-scholarship-agent/
 ├── app.py              # Streamlit UI, filters, language and RTL handling
 ├── agent.py            # Gemini agent: web search, enrichment, retries and fallback
 ├── sources.py          # Website crawlers (no AI) and date/level parsing
-├── db.py               # Local SQLite storage and filtering helpers
+├── db.py               # Local SQLite storage, duplicate merging and filtering helpers
+├── storage.py          # saves settings (settings.json) and the API key (.env) locally
 ├── i18n.py             # EN / FA / TR / AR translations
 ├── countries.py        # country name -> landmark thumbnail (SVG or your own photo)
 ├── assets/countries/   # landmark illustrations (de.svg, fr.svg, ...) + optional photos
@@ -271,7 +276,7 @@ Supported formats: `.jpg`, `.png`, `.webp` (a photo always wins over the `.svg`)
 GitHub stores your code; it does not run Streamlit apps. To make the app available online:
 
 - **Streamlit Community Cloud (free):** push the repo to GitHub, open <share.streamlit.io>, click **Create app**, choose the repo, branch `main` and file `app.py`, then **Deploy**.
-  Do **not** add your own API key to *Secrets* on a public app (anyone could spend your quota); leave it empty so each visitor enters their own key in the sidebar. Saved results reset when the app restarts.
+  Do **not** add your own API key to *Secrets* on a public app (anyone could spend your quota); leave it empty so each visitor enters their own key in the sidebar. Saved results reset when the app restarts. On a server the sidebar never writes keys to disk (see `DARA_SAVE_KEY`).
 - **Your own server (VPS):** `pip install -r requirements.txt`, then `streamlit run app.py --server.port 8501 --server.address 0.0.0.0` behind Nginx/Caddy with HTTPS.
 
 <a id="troubleshooting"></a>
@@ -286,6 +291,8 @@ GitHub stores your code; it does not run Streamlit apps. To make the app availab
 | `ERROR: Could not open requirements file ... 'requirements.txt'` | The launcher is not next to the project files (for example it was run from inside the ZIP, or moved out of the folder). Extract the **whole** ZIP (right-click, *Extract All*) and run the launcher from inside the extracted project folder. Also check that `requirements.txt` exists in your repository. The newer launcher shows a clear message for this. |
 | `Microsoft Visual C++ 14.0 or greater is required` / `Failed building wheel` (pyarrow, pyyaml) | Your Python is too new (for example 3.15) and some packages have no pre-built version. Install Python 3.12 or 3.13, delete the `venv` folder and run `Run (Windows).bat` again; the launcher picks a supported Python automatically. |
 | `'streamlit' is not recognized` | The dependencies failed to install. Fix the error shown above it (see the rows above), then run the launcher again. |
+| The API key is not remembered | Saving works only when the app is opened on this computer (`localhost`) and *Remember the key on this computer* is ticked. You can also put the key in `.env` yourself, or set `DARA_SAVE_KEY=1`. |
+| The same scholarship appears twice | Duplicates are merged automatically on every import, AI search and app start. If two entries still show up, their titles differ a lot, so they are treated as different scholarships. |
 | Persian font not applied | Keep `static/Sans-Regular.woff2` and `static/Sans-Bold.woff2` next to `app.py` and restart the app. |
 | Few AI results | Gemini is not a crawler. Use website import for volume, and AI search for discovery. |
 
@@ -310,7 +317,7 @@ GitHub stores your code; it does not run Streamlit apps. To make the app availab
 ## 📋 Changelog
 
 All notable changes are documented in [CHANGELOG.md](CHANGELOG.md).
-The latest release is **v0.5.3**: the launchers now explain clearly when they are run outside the project folder.
+The latest release is **v0.6.0**: the API key and settings are remembered, duplicate scholarships are merged, and importing again refreshes the list.
 <a id="contributing"></a>
 
 ## 🤝 Contributing
